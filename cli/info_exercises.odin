@@ -314,5 +314,120 @@ Both procedures loop over the inventory with 'for item in inventory'.
 'find_item' returns 'item' as soon as 'item.name == name'; returning the item
 wraps it in the Maybe. After the loop, return nil.`,
 		},
+		// ------------------------------------------------------------ 09_pointers
+		{
+			name = "pointers1",
+			dir = "09_pointers",
+			expected_output = `Lives left: 2
+Read through the pointer: 2`,
+			hint = `
+A pointer holds an address. Take the address of 'lives' with '&lives'.`,
+		},
+		{
+			name = "pointers2",
+			dir = "09_pointers",
+			mode = .Test,
+			hint = `
+The tests pass '&x' and '&ada', which are pointers. Change the parameter types
+to '^int' and '^Player'.
+
+Write through the int pointer with 'n^ += 1'. For the struct, 'player.score'
+follows the pointer for you.`,
+		},
+		{
+			name = "pointers3",
+			dir = "09_pointers",
+			mode = .Test,
+			hint = `
+'leader' should compare 'a.score' and 'b.score' and return 'b' when its score
+is higher.
+
+In 'add_bonus', return early when 'player == nil'.`,
+		},
+		// ------------------------------------------------------------ 10_slices
+		{
+			name = "slices1",
+			dir = "10_slices",
+			expected_output = `Days in the week: 7
+Weekend: [18, 20]
+Saturday is now 25`,
+			hint = `
+Slice the array to get a slice of all of it: 'temperatures[:]'.`,
+		},
+		{
+			name = "slices2",
+			dir = "10_slices",
+			mode = .Test,
+			hint = `
+The loop variable is a copy, and copies can't be assigned to. Loop with
+'for &x in s' to get a reference to each element.`,
+		},
+		{
+			name = "slices3",
+			dir = "10_slices",
+			mode = .Test,
+			hint = `
+Return 'fallback' when 'len(names) == 0'. A nil slice has length 0 too.`,
+		},
+		// ------------------------------------------------------------ 11_dynamic_arrays
+		{
+			name = "dynamic_arrays1",
+			dir = "11_dynamic_arrays",
+			mode = .Test,
+			hint = `
+Declare 'result: [dynamic]int' and add each even number with
+'append(&result, i)'. You don't need 'count' any more.`,
+		},
+		{
+			name = "dynamic_arrays2",
+			dir = "11_dynamic_arrays",
+			mode = .Test,
+			hint = `
+After 'ordered_remove(numbers, i)', the next element moves into position i,
+but the loop then moves on to i + 1 and skips it. Loop backwards instead:
+
+    #reverse for n, i in numbers {
+        if n < 0 {
+            ordered_remove(numbers, i)
+        }
+    }`,
+		},
+		{
+			name = "dynamic_arrays3",
+			dir = "11_dynamic_arrays",
+			expected_output = `Stock: [13, 10, 17]
+Length: 3 Capacity: 8`,
+			hint = `
+'count' is a copy of each element. Write 'for &count in stock' to change the
+elements themselves.`,
+		},
+		// ------------------------------------------------------------ 12_maps
+		{
+			name = "maps1",
+			dir = "12_maps",
+			mode = .Test,
+			hint = `
+'counts[word] = 1' overwrites the count each time. A missing key reads as 0,
+so 'counts[word] += 1' counts the first time and every time after.`,
+		},
+		{
+			name = "maps2",
+			dir = "12_maps",
+			mode = .Test,
+			hint = `
+'item in stock' is true whenever the key exists, whatever its value.
+
+Make the parameter of 'take_one' a '^map[string]int'. Indexing works through
+the pointer, and 'delete_key' takes the pointer as it is: 'delete_key(stock,
+item)'.`,
+		},
+		{
+			name = "maps3",
+			dir = "12_maps",
+			expected_output = `Visited 3 different cities: ["Kyiv", "Lima", "Oslo"]`,
+			hint = `
+The value type is 'struct{}', whose only value is written '{}'. Use
+'visited[city] = {}'.`,
+		},
 	}
 }
