@@ -94,6 +94,7 @@ run_exercise :: proc(tool: ^Odin_Tool, info: Exercise_Info, output: ^strings.Bui
 
 	if info.mode == .Test {
 		if res.exit_code != 0 {
+			remove_test_runner_tips(output)
 			return false
 		}
 		strings.builder_reset(output)
@@ -160,6 +161,27 @@ shorten_paths :: proc(output: ^strings.Builder, root: string) {
 	shortened, _ := strings.replace_all(text, prefix, "", context.temp_allocator)
 	strings.builder_reset(output)
 	strings.write_string(output, shortened)
+}
+
+// The test runner ends a failed run with tips about rerunning single tests
+// and copying names to the clipboard. They don't apply to odinlings.
+@(private = "file")
+remove_test_runner_tips :: proc(output: ^strings.Builder) {
+	text := strings.to_string(output^)
+	start := strings.index(text, "To run only the failed test")
+	if start < 0 {
+		return
+	}
+	end := len(text)
+	if tip := strings.index(text[start:], "OSC 52"); tip >= 0 {
+		if nl := strings.index_byte(text[start + tip:], '\n'); nl >= 0 {
+			end = start + tip + nl + 1
+		}
+	}
+	trimmed := strings.concatenate({strings.trim_right_space(text[:start]), "\n", text[end:]}, context.temp_allocator)
+	strings.builder_reset(output)
+	strings.write_string(output, strings.trim_right_space(trimmed))
+	strings.write_byte(output, '\n')
 }
 
 @(private = "file")
