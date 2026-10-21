@@ -185,5 +185,134 @@ rounds down for you.
 'price_for_a_week' can loop with 'for day in 0 ..< 7' and add up
 'ticket_price(age, day)'.`,
 		},
+		// ------------------------------------------------------------ 05_arrays
+		{
+			name = "arrays1",
+			dir = "05_arrays",
+			expected_output = `There are 5 planets in the list
+The first one is Mercury
+The last one is Jupiter`,
+			hint = `
+The array has 5 elements, numbered 0 to 4, so index 5 is one past the end.
+Use 'planets[4]', or better, 'planets[len(planets) - 1]', which keeps working
+when the list grows.`,
+		},
+		{
+			name = "arrays2",
+			dir = "05_arrays",
+			mode = .Test,
+			hint = `
+'a + b / 2' divides only 'b'. Write '(a + b) / 2'.
+
+To swap the fields, return the swizzle 'v.yx'.`,
+		},
+		{
+			name = "arrays3",
+			dir = "05_arrays",
+			mode = .Test,
+			hint = `
+'scores' is a parameter, so it can't be changed. Copy it into a local
+variable first, 'result := scores', double the elements of 'result' and
+return it.`,
+		},
+		// ------------------------------------------------------------ 06_structs
+		{
+			name = "structs1",
+			dir = "06_structs",
+			expected_output = `Home is at 2 5
+The shop is at 7 0
+Walking distance: 10`,
+			hint = `
+Add a 'y: int,' line to the struct, next to 'x'. Fields that a literal leaves
+out, like the shop's 'y', get their zero value.`,
+		},
+		{
+			name = "structs2",
+			dir = "06_structs",
+			mode = .Test,
+			hint = `
+'area' should return 'room.size.width * room.size.height'.
+
+For 'total_area', loop over the rooms, 'for room in house.rooms', and add up
+'area(room)'.`,
+		},
+		{
+			name = "structs3",
+			dir = "06_structs",
+			mode = .Test,
+			hint = `
+Write 'using' in front of the field: 'using position: Vec2,'. Then 'e.x'
+means 'e.position.x'.`,
+		},
+		// ------------------------------------------------------------ 07_enums
+		{
+			name = "enums1",
+			dir = "07_enums",
+			mode = .Test,
+			hint = `
+The compiler reports an unhandled switch case. Add 'case .West:' and return
+'.North' from it.`,
+		},
+		{
+			name = "enums2",
+			dir = "07_enums",
+			mode = .Test,
+			hint = `
+'(int(d) + 2) % len(Direction)' wraps around after the last direction. Convert
+the result back with 'Direction(...)'.
+
+For the count, loop with 'for d in Direction' and compare 'int(opposite(d))'
+with 'int(d)'.`,
+		},
+		{
+			name = "enums3",
+			dir = "07_enums",
+			mode = .Test,
+			hint = `
+An enumerated array is indexed with the enum, not a number: 'deltas[d]'.
+
+Write '#partial switch d' to allow the switch to skip East and West.`,
+		},
+		// ------------------------------------------------------------ 08_unions
+		{
+			name = "unions1",
+			dir = "08_unions",
+			mode = .Test,
+			hint = `
+Add 'case Triangle:' to the switch and return 's.base * s.height / 2'.`,
+		},
+		{
+			name = "unions2",
+			dir = "08_unions",
+			mode = .Test,
+			hint = `
+'nil' is the value of a Maybe that holds nothing. Replace 'return -1' with
+'return nil'.`,
+		},
+		{
+			name = "unions3",
+			dir = "08_unions",
+			mode = .Test,
+			hint = `
+Ask the assertion for a second result so it can't crash:
+
+    if press, ok := event.(Key_Press); ok {
+        return press.key
+    }
+    return 0`,
+		},
+		// ------------------------------------------------------------ quiz2
+		{
+			name = "quiz2",
+			dir = "quizzes",
+			mode = .Test,
+			hint = `
+Both procedures loop over the inventory with 'for item in inventory'.
+
+'count_of_kind' adds 'item.count' when 'item.kind == kind'.
+
+'find_item' returns 'item' as soon as 'item.name == name'; returning the item
+wraps it in the Maybe. After the loop, return nil.`,
+		},
 	}
 }
