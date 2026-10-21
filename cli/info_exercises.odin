@@ -429,5 +429,90 @@ item)'.`,
 The value type is 'struct{}', whose only value is written '{}'. Use
 'visited[city] = {}'.`,
 		},
+		// ------------------------------------------------------------ 13_memory
+		{
+			name = "memory1",
+			dir = "13_memory",
+			mode = .Test,
+			track_memory = true,
+			hint = `
+'new(Node)' already gives you a '^Node'. Return 'node' itself, not 'node^'
+(which is a copy of the Node it points to).`,
+		},
+		{
+			name = "memory2",
+			dir = "13_memory",
+			mode = .Test,
+			track_memory = true,
+			hint = `
+The leak report points at the 'make([dynamic]int)' line. Add
+'defer delete(evens)' right after it.`,
+		},
+		{
+			name = "memory3",
+			dir = "13_memory",
+			mode = .Test,
+			hint = `
+'fmt.aprintf' allocates with context.allocator. 'fmt.tprintf' takes the same
+arguments and allocates with context.temp_allocator instead.`,
+		},
+		// ------------------------------------------------------------ 14_strings
+		{
+			name = "strings1",
+			dir = "14_strings",
+			mode = .Test,
+			hint = `
+'len' counts bytes. Loop over the string, 'for _ in s', and count the
+iterations: each one is a rune.`,
+		},
+		{
+			name = "strings2",
+			dir = "14_strings",
+			mode = .Test,
+			hint = `
+Pass the trimmed name to 'strings.to_lower', together with the allocator:
+
+    return strings.to_lower(strings.trim_space(name), allocator)`,
+		},
+		{
+			name = "strings3",
+			dir = "14_strings",
+			mode = .Test,
+			hint = `
+Loop with 'for n, i in numbers'. Before every number except the first
+(i > 0), write ", " with 'strings.write_string(&b, ", ")'. Then write the
+number with 'fmt.sbprintf(&b, "%d", n)' (add 'import "core:fmt"' at the top).`,
+		},
+		// ------------------------------------------------------------ 15_error_handling
+		{
+			name = "error_handling1",
+			dir = "15_error_handling",
+			mode = .Test,
+			hint = `
+Change the result type to '(value: int, ok: bool)'. For a digit, return the
+number and true. Otherwise return 0 and false (with named results, a bare
+'return' does that).`,
+		},
+		{
+			name = "error_handling2",
+			dir = "15_error_handling",
+			mode = .Test,
+			hint = `
+Put 'or_return' after each validator call:
+
+    validate_name(name) or_return
+
+When the call returns an error, 'register' returns it right away.`,
+		},
+		{
+			name = "error_handling3",
+			dir = "15_error_handling",
+			mode = .Test,
+			hint = `
+'value := strconv.parse_int(entry) or_continue' skips entries that aren't
+numbers.
+
+'return strconv.parse_int(text) or_else 50' falls back to 50.`,
+		},
 	}
 }
