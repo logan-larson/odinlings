@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    # Weekly run against the newest Odin release, to catch breaking changes
+    # in the compiler or the core library early.
+    - cron: "17 6 * * 1"
+
+jobs:
+  check:
+    name: Check (${{ matrix.os }}, Odin ${{ matrix.odin }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        # Keep this equal to MIN_ODIN_VERSION in cli/config.odin.
+        odin: [dev-2026-10]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: laytan/setup-odin@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          release: ${{ matrix.odin }}
+      - run: odin version
+
+      - name: Build and test the CLI
+        if: runner.os != 'Windows'
+        run: ./build.sh test
+      - name: Build and test the CLI (Windows)
+        if: runner.os == 'Windows'
+        shell: cmd
+        run: build.bat test
+
+      - name: Check the exercises and solutions
+        shell: bash
+        run: ./odinlings dev check
+
+  latest-odin:
+    name: Check against the latest Odin release
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: laytan/setup-odin@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          release: latest
+      - run: odin version
+      - run: ./build.sh test
+      - run: ./odinlings dev check

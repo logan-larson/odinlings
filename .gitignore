@@ -1,0 +1,19 @@
+# The odinlings binary
+/odinlings
+/odinlings.exe
+/tests/odinlings-fixture
+/tests/odinlings-fixture.exe
+
+# Your progress and build output (also inside tests/fixture)
+.odinlings-state.txt
+.odinlings/
+
+# Compiler and linker leftovers
+*.exe
+*.pdb
+*.obj
+*.o
+*.ilk
+*.exp
+*.lib
+*.rdi
